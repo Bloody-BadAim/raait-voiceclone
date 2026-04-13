@@ -2,259 +2,127 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Bot Interface</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fdfdfd;
-      text-align: center;
-      padding-top: 50px;
-    }
-
-    .step-label {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .step-label span {
-      color: #77bfff;
-    }
-
-    .step-label b {
-      color: #1a3b6d;
-    }
-
-    .button {
-      display: inline-block;
-      background-color: #1597ea;
-      color: white;
-      font-size: 20px;
-      padding: 15px 30px;
-      margin: 10px 0 10px 0;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      width: 300px;
-    }
-
-    .button-outline {
-      background-color: white;
-      border: 3px solid #1597ea;
-      color: #1597ea;
-    }
-
-    .start-button {
-      background-color: #e81111;
-      color: white;
-    }
-
-    #audio-player {
-      margin-top: 10px;
-      display: none;
-    }
-
-    #file-name {
-      font-size: 14px;
-      color: #333;
-      margin-top: 10px;
-    }
-
-    /* Container for conversation widget (Step 5) */
-    #convaiWidgetContainer {
-      margin-top: 30px;
-      min-height: 300px;
-      border: 1px solid #ccc;
-      padding: 10px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kloon Jezelf — HBO-ICT Opendag</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-  <!-- STAP 1: Record Voice Sample -->
-  <div class="step">
-    <div class="step-label"><span>STAP 1</span> <b>STEM OPNEMEN</b></div>
-    <button class="button" onclick="recordVoiceSample()">Neem je stem op</button>
-    <div id="voiceStatus" style="margin-top:5px;">Nog niet opgenomen</div>
+  <!-- Background glow -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- HvA badge -->
+  <div class="hva-badge"><span>HBO-ICT</span> &middot; Hogeschool van Amsterdam</div>
+
+  <!-- Progress dots -->
+  <div class="progress-dots">
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
   </div>
 
-  <!-- STAP 2: Record Role -->
-  <div class="step">
-    <div class="step-label"><span>STAP 2</span> <b>WELKOMSTTEKST</b></div>
-    <button class="button" onclick="recordRoleDescription()">Wie ben je</button>
-    <div id="roleStatus" style="margin-top:5px;">Nog niet opgenomen</div>
+  <!-- ====== IDLE SCREEN ====== -->
+  <div id="idle" class="screen active">
+    <div class="idle-badge">AI Voice Cloning</div>
+    <h1 class="idle-title">Durf jij <span class="accent">gekloond</span> te worden?</h1>
+    <p class="idle-subtitle">Laat je stem klonen door AI en voer een gesprek met jezelf</p>
+    <button class="btn btn-primary pulse" onclick="startStep1()">Start</button>
   </div>
 
-  <!-- STAP 3: Create Agent -->
-  <div class="step">
-    <div class="step-label"><span>STAP 3</span> <b>BEWAAR BOT</b></div>
-    <button class="button" onclick="createAgent()">Bewaar</button>
-    <div id="agentInfo" style="margin-top:5px;"></div>
+  <!-- ====== STEP 1: VOICE SAMPLE ====== -->
+  <div id="step1" class="screen">
+    <div class="step-number">Stap 1 van 2</div>
+    <h2 class="step-title">Lees dit hardop voor</h2>
+    <p class="step-instruction">Spreek duidelijk in de microfoon. Hoe beter we je stem horen, hoe beter de kloon.</p>
+
+    <div class="reading-text">
+      Welkom bij de Hogeschool van Amsterdam. Ik ben hier vandaag om mijn stem te laten klonen
+      door kunstmatige intelligentie. Dat klinkt misschien als science fiction, maar het is echt
+      mogelijk. Met slechts een minuut van mijn stem kan een computer leren hoe ik praat.
+      De technologie achter voice cloning gebruikt deep learning en neurale netwerken. Het analyseert
+      de unieke kenmerken van mijn stem: de toonhoogte, het ritme, en de manier waarop ik klinkers
+      en medeklinkers uitspreek. Straks kan een digitale versie van mij vragen beantwoorden over
+      HBO-ICT, programmeren, en alles wat met technologie te maken heeft. Best bijzonder als je
+      erover nadenkt. Vijf jaar geleden was dit nog onmogelijk, en nu kan iedereen het gewoon
+      uitproberen op een open dag. Kunstmatige intelligentie verandert de wereld, en jij kunt
+      er deel van uitmaken door HBO-ICT te studeren aan de HvA.
+    </div>
+
+    <div class="visualizer-wrapper">
+      <div class="rec-label"><div class="rec-dot"></div> Opname</div>
+      <div id="visualizer1" class="visualizer"></div>
+      <div class="countdown" id="countdown1-wrapper">
+        <svg viewBox="0 0 80 80">
+          <circle class="countdown-circle-bg" cx="40" cy="40" r="36"/>
+          <circle class="countdown-circle" id="countdown1-circle" cx="40" cy="40" r="36"/>
+        </svg>
+        <div class="countdown-text" id="countdown1-text">60</div>
+      </div>
+    </div>
+
+    <button class="btn-stop" onclick="finishStep1()">Klaar, ga verder</button>
+    <div id="step1-error" class="error-msg"></div>
   </div>
 
-  <!-- STAP 4: Upload PDF Knowledge Base -->
-  <div class="step">
-    <div class="step-label"><span>STAP 4</span> <b>KENNIS TOEVOEGEN</b></div>
-    <input type="file" id="pdfInput" accept="application/pdf" style="display: none;" multiple>
-    <button class="button button-outline" onclick="document.getElementById('pdfInput').click()">Selecteer bestand</button>
-    <div id="file-name"></div>
-    <div id="uploadStatus"></div>
+  <!-- ====== STEP 2: ROLE DESCRIPTION ====== -->
+  <div id="step2" class="screen">
+    <div class="step-number">Stap 2 van 2</div>
+    <h2 class="step-title">Vertel wie je bent</h2>
+    <p class="step-instruction">Je kloon moet weten wie jij bent. Vertel het in een paar zinnen.</p>
+
+    <div class="suggestions">
+      <span class="suggestion-tag">Je naam</span>
+      <span class="suggestion-tag">Wat je studeert</span>
+      <span class="suggestion-tag">Je hobby's</span>
+      <span class="suggestion-tag">Een fun fact</span>
+    </div>
+
+    <div class="visualizer-wrapper">
+      <div class="rec-label"><div class="rec-dot"></div> Opname</div>
+      <div id="visualizer2" class="visualizer"></div>
+      <div class="countdown" id="countdown2-wrapper">
+        <svg viewBox="0 0 80 80">
+          <circle class="countdown-circle-bg" cx="40" cy="40" r="36"/>
+          <circle class="countdown-circle" id="countdown2-circle" cx="40" cy="40" r="36"/>
+        </svg>
+        <div class="countdown-text" id="countdown2-text">15</div>
+      </div>
+    </div>
+
+    <button class="btn-stop" onclick="finishStep2()">Klaar, maak mijn kloon</button>
+    <div id="step2-error" class="error-msg"></div>
   </div>
 
-  <!-- STAP 5: Start Conversation -->
-  <div class="step">
-    <button class="button start-button" onclick="startConversation()">Start gesprek</button>
-    <div id="convaiWidgetContainer"></div>
+  <!-- ====== LOADING SCREEN ====== -->
+  <div id="loading" class="screen">
+    <div class="loading-animation">
+      <div class="loading-ring"></div>
+      <div class="loading-ring"></div>
+      <div class="loading-ring"></div>
+    </div>
+    <div class="loading-text">Je kloon wordt gemaakt...</div>
+    <div class="loading-subtext">Dit duurt ongeveer 10 seconden</div>
   </div>
 
-  <!-- ElevenLabs widget script -->
+  <!-- ====== STEP 4: CONVERSATION ====== -->
+  <div id="step4" class="screen">
+    <div class="step-number">Klaar</div>
+    <h2 class="step-title">Praat met je kloon</h2>
+    <p class="step-instruction">Je digitale kopie is klaar. Stel een vraag en hoor jezelf antwoorden.</p>
+
+    <div id="convai-widget" class="convai-container"></div>
+
+    <button class="btn btn-outline btn-small" onclick="resetApp()">Opnieuw beginnen</button>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://elevenlabs.io/convai-widget/index.js" async></script>
-
-  <script>
-    // ------------------------------------------------------
-    // GLOBAL VARIABLES
-    // ------------------------------------------------------
-    let voiceBlob = null;     // Holds the 10s voice sample
-    let roleBlob = null;      // Holds the 10s role description
-    let agentId = null;       // Holds the agent ID after creation
-
-    // ------------------------------------------------------
-    // STEP 1: Record Voice Sample
-    // ------------------------------------------------------
-    async function recordVoiceSample() {
-      document.getElementById('voiceStatus').innerText = 'Opnemen...';
-      try {
-        voiceBlob = await recordAudio(30000); // record for 30 seconds
-        document.getElementById('voiceStatus').innerText = 'Stem opgenomen';
-      } catch (err) {
-        document.getElementById('voiceStatus').innerText = 'Fout bij opnemen: ' + err;
-      }
-    }
-
-    // ------------------------------------------------------
-    // STEP 2: Record Role Description
-    // ------------------------------------------------------
-    async function recordRoleDescription() {
-      document.getElementById('roleStatus').innerText = 'Opnemen...';
-      try {
-        roleBlob = await recordAudio(10000); // record for 10 seconds
-        document.getElementById('roleStatus').innerText = 'Welkomsttekst opgenomen';
-      } catch (err) {
-        document.getElementById('roleStatus').innerText = 'Fout bij opnemen: ' + err;
-      }
-    }
-
-    // ------------------------------------------------------
-    // STEP 3: Create Agent (Save Bot)
-    // ------------------------------------------------------
-    async function createAgent() {
-      if (!voiceBlob || !roleBlob) {
-        alert("Neem eerst zowel je stem (Stap 1) als je welkomsttekst (Stap 2) op.");
-        return;
-      }
-      const formData = new FormData();
-      formData.append('voice_sample', voiceBlob, 'voice_sample.wav');
-      formData.append('role_audio', roleBlob, 'role_audio.wav');
-
-      const res = await fetch('/api/clone-voice', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await res.json();
-      if (data.agent_id) {
-        agentId = data.agent_id;
-        document.getElementById('agentInfo').innerText = 'Bot bewaard! Agent ID: ' + agentId;
-      } else {
-        document.getElementById('agentInfo').innerText = 'Fout: ' + JSON.stringify(data);
-      }
-    }
-
-    // ------------------------------------------------------
-    // STEP 4: PDF Knowledge Base
-    // ------------------------------------------------------
-    document.getElementById('pdfInput').addEventListener('change', async function() {
-      // Show file name(s)
-      const files = this.files;
-      if (!files || files.length === 0) {
-        document.getElementById('file-name').textContent = '';
-        return;
-      }
-      let fileNames = [];
-      for (let i = 0; i < files.length; i++) {
-        fileNames.push(files[i].name);
-      }
-      document.getElementById('file-name').textContent = 'Geselecteerd: ' + fileNames.join(', ');
-
-      if (!agentId) {
-        alert("Bewaar de bot eerst (Stap 3) voordat je kennis toevoegt.");
-        return;
-      }
-
-      // For each selected PDF, upload it
-      for (let i = 0; i < files.length; i++) {
-        const formData = new FormData();
-        formData.append('agent_id', agentId);
-        formData.append('pdf_file', files[i], files[i].name);
-        const res = await fetch('/api/upload-doc', {
-          method: 'POST',
-          body: formData
-        });
-        const data = await res.json();
-        if (data.message) {
-          document.getElementById('uploadStatus').innerText += files[i].name + ': ' + data.message + '\n';
-        } else {
-          document.getElementById('uploadStatus').innerText += files[i].name + ': Fout - ' + JSON.stringify(data) + '\n';
-        }
-      }
-    });
-
-    // ------------------------------------------------------
-    // STEP 5: Start Conversation
-    // ------------------------------------------------------
-    function startConversation() {
-      if (!agentId) {
-        alert("Bewaar de bot eerst (Stap 3) om een gesprek te starten.");
-        return;
-      }
-      // Clear any existing widget
-      const container = document.getElementById('convaiWidgetContainer');
-      container.innerHTML = "";
-
-      // Create the <elevenlabs-convai> element with the agent ID
-      const widget = document.createElement('elevenlabs-convai');
-      widget.setAttribute('agent-id', agentId);
-      container.appendChild(widget);
-
-      alert("Gesprek gestart! 🎤");
-      console.log("Start gesprek met agent:", agentId);
-    }
-
-    // ------------------------------------------------------
-    // HELPER: Record Audio for X ms
-    // ------------------------------------------------------
-    async function recordAudio(durationMs) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          const mediaRecorder = new MediaRecorder(stream);
-          const audioChunks = [];
-          mediaRecorder.ondataavailable = event => {
-            audioChunks.push(event.data);
-          };
-          mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            // Log the size of the audio blob
-           console.log("Audio blob size:", audioBlob.size);
-            resolve(audioBlob);
-          };
-          mediaRecorder.start();
-          setTimeout(() => {
-            mediaRecorder.stop();
-          }, durationMs);
-        } catch (err) {
-          reject(err);
-        }
-      });
-    }
-  </script>
+  <script src="/static/js/wavEncoder.js"></script>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>
