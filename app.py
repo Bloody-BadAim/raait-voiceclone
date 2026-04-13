@@ -74,8 +74,12 @@ def clone_voice():
         "name": "HBO-ICT Kloon",
         "conversation_config": {
             "tts": {
-                "model_id": "eleven_flash_v2_5",
-                "voice_id": cloned_voice_id
+                "model_id": "eleven_multilingual_v2",
+                "voice_id": cloned_voice_id,
+                "similarity_boost": 0.85,
+                "stability": 0.5,
+                "style": 0.4,
+                "use_speaker_boost": True
             },
             "agent": {
                 "language": "nl",

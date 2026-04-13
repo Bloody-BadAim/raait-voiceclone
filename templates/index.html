@@ -4,43 +4,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kloon Jezelf — HBO-ICT Opendag</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-  <!-- Background glow -->
-  <div class="bg-glow bg-glow-1"></div>
-  <div class="bg-glow bg-glow-2"></div>
+  <!-- Background -->
+  <div class="bg"></div>
 
-  <!-- HvA badge -->
-  <div class="hva-badge"><span>HBO-ICT</span> &middot; Hogeschool van Amsterdam</div>
+  <!-- HvA driehoeken -->
+  <div class="tri-accent tri-accent-1"></div>
+  <div class="tri-accent tri-accent-2"></div>
+  <div class="tri-accent tri-accent-3"></div>
 
-  <!-- Progress dots -->
-  <div class="progress-dots">
-    <div class="dot active"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
+  <!-- Floating geometric shapes -->
+  <div class="geo geo-sq"></div>
+  <div class="geo geo-ci"></div>
+  <div class="geo geo-tr"></div>
+  <div class="geo geo-ch"></div>
+  <div class="geo geo-pl"></div>
+  <div class="geo geo-dot"></div>
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="/static/img/AUAS_logo_wit_RGB.png" alt="AUAS">
+    <div class="logo-pipe"></div>
+    <span class="logo-sub">HBO-ICT</span>
   </div>
 
-  <!-- ====== IDLE SCREEN ====== -->
-  <div id="idle" class="screen active">
-    <div class="idle-badge">AI Voice Cloning</div>
-    <h1 class="idle-title">Durf jij <span class="accent">gekloond</span> te worden?</h1>
-    <p class="idle-subtitle">Laat je stem klonen door AI en voer een gesprek met jezelf</p>
-    <button class="btn btn-primary pulse" onclick="startStep1()">Start</button>
+  <!-- Payoff -->
+  <div class="payoff">Creating Tomorrow</div>
+
+  <!-- Progress -->
+  <div class="dots">
+    <span class="on"></span>
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
 
-  <!-- ====== STEP 1: VOICE SAMPLE ====== -->
-  <div id="step1" class="screen">
-    <div class="step-number">Stap 1 van 2</div>
-    <h2 class="step-title">Lees dit hardop voor</h2>
-    <p class="step-instruction">Spreek duidelijk in de microfoon. Hoe beter we je stem horen, hoe beter de kloon.</p>
+  <!-- ====== IDLE ====== -->
+  <div id="idle" class="s active">
+    <div class="idle-tag">AI Voice Cloning</div>
+    <h1 class="idle-h">Durf jij <span class="hl">gekloond</span> te worden?</h1>
+    <p class="idle-p">Laat je stem klonen door AI en voer een gesprek met jezelf</p>
+    <button class="btn btn-main pulse" onclick="startStep1()">Start</button>
+  </div>
 
-    <div class="reading-text">
+  <!-- ====== STEP 1 ====== -->
+  <div id="step1" class="s">
+    <div class="step-label">Stap 1 van 2</div>
+    <h2 class="step-h">Lees dit hardop voor</h2>
+    <p class="step-p">Spreek duidelijk in de microfoon. Hoe beter we je stem horen, hoe beter de kloon.</p>
+
+    <div class="read-box">
       Welkom bij de Hogeschool van Amsterdam. Ik ben hier vandaag om mijn stem te laten klonen
       door kunstmatige intelligentie. Dat klinkt misschien als science fiction, maar het is echt
       mogelijk. Met slechts een minuut van mijn stem kan een computer leren hoe ik praat.
@@ -53,74 +69,71 @@
       er deel van uitmaken door HBO-ICT te studeren aan de HvA.
     </div>
 
-    <div class="visualizer-wrapper">
-      <div class="rec-label"><div class="rec-dot"></div> Opname</div>
-      <div id="visualizer1" class="visualizer"></div>
-      <div class="countdown" id="countdown1-wrapper">
+    <div class="vis-row">
+      <div class="rec-tag">Opname</div>
+      <div id="visualizer1" class="vis"></div>
+      <div class="cd">
         <svg viewBox="0 0 80 80">
-          <circle class="countdown-circle-bg" cx="40" cy="40" r="36"/>
-          <circle class="countdown-circle" id="countdown1-circle" cx="40" cy="40" r="36"/>
+          <circle class="cd-bg" cx="40" cy="40" r="36"/>
+          <circle class="cd-ring" id="countdown1-circle" cx="40" cy="40" r="36"/>
         </svg>
-        <div class="countdown-text" id="countdown1-text">60</div>
+        <div class="cd-num" id="countdown1-text">60</div>
       </div>
     </div>
 
-    <button class="btn-stop" onclick="finishStep1()">Klaar, ga verder</button>
-    <div id="step1-error" class="error-msg"></div>
+    <button class="btn-secondary" onclick="finishStep1()">Klaar, ga verder</button>
+    <div id="step1-error" class="err"></div>
   </div>
 
-  <!-- ====== STEP 2: ROLE DESCRIPTION ====== -->
-  <div id="step2" class="screen">
-    <div class="step-number">Stap 2 van 2</div>
-    <h2 class="step-title">Vertel wie je bent</h2>
-    <p class="step-instruction">Je kloon moet weten wie jij bent. Vertel het in een paar zinnen.</p>
+  <!-- ====== STEP 2 ====== -->
+  <div id="step2" class="s">
+    <div class="step-label">Stap 2 van 2</div>
+    <h2 class="step-h">Vertel wie je bent</h2>
+    <p class="step-p">Je kloon moet weten wie jij bent. Vertel het in een paar zinnen.</p>
 
-    <div class="suggestions">
-      <span class="suggestion-tag">Je naam</span>
-      <span class="suggestion-tag">Wat je studeert</span>
-      <span class="suggestion-tag">Je hobby's</span>
-      <span class="suggestion-tag">Een fun fact</span>
+    <div class="tags">
+      <span class="tag">Je naam</span>
+      <span class="tag">Wat je studeert</span>
+      <span class="tag">Je hobby's</span>
+      <span class="tag">Een fun fact</span>
     </div>
 
-    <div class="visualizer-wrapper">
-      <div class="rec-label"><div class="rec-dot"></div> Opname</div>
-      <div id="visualizer2" class="visualizer"></div>
-      <div class="countdown" id="countdown2-wrapper">
+    <div class="vis-row">
+      <div class="rec-tag">Opname</div>
+      <div id="visualizer2" class="vis"></div>
+      <div class="cd">
         <svg viewBox="0 0 80 80">
-          <circle class="countdown-circle-bg" cx="40" cy="40" r="36"/>
-          <circle class="countdown-circle" id="countdown2-circle" cx="40" cy="40" r="36"/>
+          <circle class="cd-bg" cx="40" cy="40" r="36"/>
+          <circle class="cd-ring" id="countdown2-circle" cx="40" cy="40" r="36"/>
         </svg>
-        <div class="countdown-text" id="countdown2-text">15</div>
+        <div class="cd-num" id="countdown2-text">20</div>
       </div>
     </div>
 
-    <button class="btn-stop" onclick="finishStep2()">Klaar, maak mijn kloon</button>
-    <div id="step2-error" class="error-msg"></div>
+    <button class="btn-secondary" onclick="finishStep2()">Klaar, maak mijn kloon</button>
+    <div id="step2-error" class="err"></div>
   </div>
 
-  <!-- ====== LOADING SCREEN ====== -->
-  <div id="loading" class="screen">
-    <div class="loading-animation">
-      <div class="loading-ring"></div>
-      <div class="loading-ring"></div>
-      <div class="loading-ring"></div>
+  <!-- ====== LOADING ====== -->
+  <div id="loading" class="s">
+    <div class="loader">
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
     </div>
-    <div class="loading-text">Je kloon wordt gemaakt...</div>
-    <div class="loading-subtext">Dit duurt ongeveer 10 seconden</div>
+    <div class="load-h">Je kloon wordt gemaakt...</div>
+    <div class="load-p">Dit duurt ongeveer 10 seconden</div>
   </div>
 
-  <!-- ====== STEP 4: CONVERSATION ====== -->
-  <div id="step4" class="screen">
-    <div class="step-number">Klaar</div>
-    <h2 class="step-title">Praat met je kloon</h2>
-    <p class="step-instruction">Je digitale kopie is klaar. Stel een vraag en hoor jezelf antwoorden.</p>
-
-    <div id="convai-widget" class="convai-container"></div>
-
-    <button class="btn btn-outline btn-small" onclick="resetApp()">Opnieuw beginnen</button>
+  <!-- ====== CONVERSATION ====== -->
+  <div id="step4" class="s">
+    <div class="step-label">Klaar</div>
+    <h2 class="step-h">Praat met je kloon</h2>
+    <p class="step-p">Je digitale kopie is klaar. Stel een vraag en hoor jezelf antwoorden.</p>
+    <div id="convai-widget" class="chat-box"></div>
+    <button class="btn-secondary sm" onclick="resetApp()">Opnieuw beginnen</button>
   </div>
 
-  <!-- Scripts -->
   <script src="https://elevenlabs.io/convai-widget/index.js" async></script>
   <script src="/static/js/wavEncoder.js"></script>
   <script src="/static/js/app.js"></script>

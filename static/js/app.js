@@ -4,7 +4,7 @@
 
 const VOICE_DURATION = 60;
 const ROLE_DURATION = 20;
-const BAR_COUNT = 48;
+const BAR_COUNT = 40;
 
 let voiceBlob = null;
 let roleBlob = null;
@@ -21,15 +21,14 @@ let animationFrameId = null;
 // ---- SCREEN NAVIGATION ----
 
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.s').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
-  // Update progress dots
   const screens = ['idle', 'step1', 'step2', 'loading', 'step4'];
   const idx = screens.indexOf(id);
-  document.querySelectorAll('.progress-dots .dot').forEach((dot, i) => {
-    dot.classList.remove('active', 'done');
-    if (i === idx) dot.classList.add('active');
+  document.querySelectorAll('.dots span').forEach((dot, i) => {
+    dot.classList.remove('on', 'done');
+    if (i === idx) dot.classList.add('on');
     else if (i < idx) dot.classList.add('done');
   });
 }
@@ -41,14 +40,14 @@ function createBars(containerId) {
   container.innerHTML = '';
   for (let i = 0; i < BAR_COUNT; i++) {
     const bar = document.createElement('div');
-    bar.classList.add('bar');
+    bar.classList.add('b');
     container.appendChild(bar);
   }
 }
 
 function startVisualizer(containerId) {
   const container = document.getElementById(containerId);
-  const bars = container.querySelectorAll('.bar');
+  const bars = container.querySelectorAll('.b');
   const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
   function draw() {
@@ -56,7 +55,7 @@ function startVisualizer(containerId) {
     const step = Math.floor(dataArray.length / BAR_COUNT);
     for (let i = 0; i < BAR_COUNT; i++) {
       const value = dataArray[i * step];
-      const height = Math.max(4, (value / 255) * 80);
+      const height = Math.max(3, (value / 255) * 52);
       bars[i].style.height = height + 'px';
     }
     animationFrameId = requestAnimationFrame(draw);
@@ -105,20 +104,20 @@ async function startRecording(visualizerId) {
 
   mediaStream = await navigator.mediaDevices.getUserMedia({
     audio: {
-      echoCancellation: true,
-      noiseSuppression: true,
-      sampleRate: 44100
+      echoCancellation: false,
+      noiseSuppression: false,
+      autoGainControl: false,
+      sampleRate: 48000
     }
   });
 
-  audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 44100 });
+  audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 48000 });
   const source = audioContext.createMediaStreamSource(mediaStream);
 
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 256;
   source.connect(analyser);
 
-  // Use ScriptProcessorNode to capture raw PCM samples
   scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
   scriptProcessor.onaudioprocess = (e) => {
     if (!isRecording) return;
@@ -147,7 +146,6 @@ function stopRecording() {
     mediaStream = null;
   }
 
-  // Merge all recorded chunks into a single Float32Array
   const totalLength = recordedSamples.reduce((acc, chunk) => acc + chunk.length, 0);
   const merged = new Float32Array(totalLength);
   let offset = 0;
@@ -156,7 +154,7 @@ function stopRecording() {
     offset += chunk.length;
   }
 
-  const sampleRate = audioContext ? audioContext.sampleRate : 44100;
+  const sampleRate = audioContext ? audioContext.sampleRate : 48000;
 
   if (audioContext) {
     audioContext.close();
@@ -266,6 +264,8 @@ function resetApp() {
   voiceBlob = null;
   roleBlob = null;
   agentId = null;
+  document.getElementById('step1-error').textContent = '';
+  document.getElementById('step2-error').textContent = '';
   showScreen('idle');
 }
 

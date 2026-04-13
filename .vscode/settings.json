@@ -1,0 +1,6 @@
+{
+  "python.defaultInterpreterPath": "/home/matin/.pyenv/versions/3.12.13/bin/python3",
+  "python.analysis.extraPaths": [
+    "/home/matin/.pyenv/versions/3.12.13/lib/python3.12/site-packages"
+  ]
+}
