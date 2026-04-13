@@ -1,72 +1,83 @@
-# RAAIT Voice Clone & Agent Demo
+# RAAIT Voice Clone
 
-A web-based demo that allows users to:
-1. **Clone their voice** using an audio sample.
-2. **Record a role description** (system prompt) in Dutch.
-3. **Upload a PDF document** for the agent to reference.
-4. **Create a conversational agent** with the cloned voice, system prompt, and RAG enabled.
-5. **Test the agent** with a chat interface.
+AI voice cloning demo voor de HBO-ICT opendag van de Hogeschool van Amsterdam. Bezoekers lezen een tekst voor, vertellen wie ze zijn, en praten daarna met een AI-kloon van zichzelf.
 
-## Prerequisites
+## Vereisten
 
-- Python 3.8+
+- Python 3.9+
 - pip
-- Node.js & npm (for the frontend)
+- ffmpeg
+- ElevenLabs API key
 
-## Installation
+## Installatie
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd raait_voiceclone
-    ```
+```bash
+git clone https://github.com/Bloody-BadAim/raait-voiceclone.git
+cd raait-voiceclone
+pip install -r requirements.txt
+```
 
-2.  **Install Python dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+ffmpeg is nodig voor audio conversie:
 
-3.  **Install Node.js dependencies:**
-    ```bash
-    cd frontend
-    npm install
-    ```
+```bash
+# Ubuntu / WSL
+sudo apt-get install ffmpeg
 
-## Configuration
+# macOS
+brew install ffmpeg
+```
 
-1.  **Set your ElevenLabs API key:**
-    Create a `.env` file in the root directory (or modify `app.py` directly):
-    ```env
-    ELEVENLABS_API_KEY=your_actual_api_key_here
-    ```
-    *Note: For this demo, the API key is hardcoded in `app.py`.*
+## Starten
 
-## Usage
+```bash
+ELEVENLABS_API_KEY="jouw_api_key" python app.py
+```
 
-1.  **Start the backend server:**
-    ```bash
-    python app.py
-    ```
-    The server will start on `http://localhost:5000`.
+Open http://localhost:5000 in je browser.
 
-2.  **Start the frontend:**
-    Open a new terminal, navigate to the `frontend` directory, and run:
-    ```bash
-    npm run dev
-    ```
-    The frontend will start on `http://localhost:3000`.
+## Hoe het werkt
 
-3.  **Use the application:**
-    - Open `http://localhost:3000` in your browser.
-    - Follow the steps to upload audio files, create an agent, and chat with it.
+1. **Start** — Druk op de startknop
+2. **Stap 1** — Lees de voorleestekst hardop voor (60 seconden). Dit is het stemvoorbeeld voor de kloon.
+3. **Stap 2** — Vertel wie je bent: je naam, studie, hobby's, een fun fact (20 seconden)
+4. **Kloon** — De app maakt een voice clone via ElevenLabs en start een conversational agent
+5. **Praat** — Stel vragen aan je AI-kloon en hoor jezelf antwoorden
 
-## API Endpoints
+## Omgevingsvariabelen
 
-### `POST /api/clone-voice`
-**Description:** Clones a voice and creates a conversational agent.
-**Request:**
-- `voice_sample`: Audio file (WAV/MP3) for voice cloning.
-- `role_audio`: Audio file (WAV/MP3) containing the system prompt description.
+| Variabele | Verplicht | Omschrijving |
+|---|---|---|
+| `ELEVENLABS_API_KEY` | Ja | API key van elevenlabs.io |
+| `PORT` | Nee | Server port (default: 5000) |
+
+## Docker
+
+```bash
+docker build -t raait-voiceclone .
+docker run -p 5000:5000 -e ELEVENLABS_API_KEY="jouw_api_key" raait-voiceclone
+```
+
+## Projectstructuur
+
+```
+app.py                  Flask backend (voice clone + agent creation)
+templates/index.html    Frontend wizard
+static/css/style.css    HBO-ICT design system
+static/js/app.js        App logica (recording, visualizer, countdown)
+static/js/wavEncoder.js PCM WAV encoder
+static/img/             Logo en afbeeldingen
+```
+
+## API
+
+### POST /api/clone-voice
+
+Kloont een stem en maakt een conversational agent.
+
+**Request** (multipart/form-data):
+- `voice_sample` — WAV audio van de voorleestekst
+- `role_audio` — WAV audio van de zelfbeschrijving
+
 **Response:**
 ```json
 {
@@ -76,36 +87,6 @@ A web-based demo that allows users to:
 }
 ```
 
-### `POST /api/upload-doc`
-**Description:** Uploads a PDF document to the agent's knowledge base.
-**Request:**
-- `agent_id`: The ID of the agent to update.
-- `pdf_file`: PDF file to upload.
-**Response:**
-```json
-{
-  "document_id": "string",
-  "message": "string"
-}
-```
-
-### `POST /api/chat`
-**Description:** Sends a message to the conversational agent.
-**Request:**
-```json
-{
-  "agent_id": "string",
-  "message": "string"
-}
-```
-**Response:**
-```json
-{
-  "response": "string",
-  "conversation_id": "string"
-}
-```
-
-## License
+## Licentie
 
 MIT
