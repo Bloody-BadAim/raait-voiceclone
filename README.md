@@ -54,7 +54,7 @@ Open http://localhost:5000 in je browser.
 
 ```bash
 docker build -t raait-voiceclone .
-docker run -p 5000:5000 -e ELEVENLABS_API_KEY="jouw_api_key" raait-voiceclone
+docker run -p 5000:5000 -e ELEVENLABS_API_KEY= sk_c6ee5ac7befda0777ce99e1387688481c514599f5b42a578 raait-voiceclone
 ```
 
 ## Projectstructuur

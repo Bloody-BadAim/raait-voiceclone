@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xxd:*)",
+      "Bash(pip3:*)",
+      "Bash(pip install:*)",
+      "Bash(printf:*)",
+      "Bash(sudo apt-get:*)",
+      "Bash(ELEVENLABS_API_KEY=\"test\" python:*)",
+      "Bash(curl:*)",
+      "Bash(sudo:*)",
+      "Bash(pkill:*)",
+      "Bash(lsof:*)",
+      "Bash(ELEVENLABS_API_KEY=\"sk_c6ee5ac7befda0777ce99e1387688481c514599f5b42a578\" python:*)",
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(git remote:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(pdftoppm:*)",
+      "Bash(pdftotext:*)",
+      "Bash(pdfimages:*)",
+      "Bash(python3:*)",
+      "WebFetch(domain:www.hva.nl)",
+      "Bash(git reset:*)",
+      "mcp__plugin_mempalace_mempalace__mempalace_list_wings",
+      "mcp__plugin_mempalace_mempalace__mempalace_add_drawer",
+      "mcp__plugin_mempalace_mempalace__mempalace_kg_add",
+      "Bash(ELEVENLABS_API_KEY=\"$ELEVENLABS_API_KEY\" python:*)",
+      "Bash(ffmpeg:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "Bash(ELEVENLABS_API_KEY=\"sk_c6ee5ac7befda0777ce99e1387688481c514599f5b42a578\" python3:*)",
+      "mcp__plugin_playwright_playwright__browser_snapshot"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - img "AUAS" [ref=e4]
+    - generic [ref=e6]: HBO-ICT
+  - generic [ref=e7]: Creating Tomorrow
+  - generic [ref=e13]:
+    - generic [ref=e14]: AI Voice Cloning
+    - heading "Durf jij gekloond te worden?" [level=1] [ref=e15]
+    - paragraph [ref=e16]: Laat je stem klonen door AI en voer een gesprek met jezelf
+    - button "Start" [ref=e17] [cursor=pointer]
+  - generic:
+    - generic: Stap 1 van 2
+    - heading "Lees dit hardop voor" [level=2]
+    - paragraph: Spreek duidelijk in de microfoon. Hoe beter we je stem horen, hoe beter de kloon.
+    - generic: "Welkom bij de Hogeschool van Amsterdam. Ik ben hier vandaag om mijn stem te laten klonen door kunstmatige intelligentie. Dat klinkt misschien als science fiction, maar het is echt mogelijk. Met slechts een minuut van mijn stem kan een computer leren hoe ik praat. De technologie achter voice cloning gebruikt deep learning en neurale netwerken. Het analyseert de unieke kenmerken van mijn stem: de toonhoogte, het ritme, en de manier waarop ik klinkers en medeklinkers uitspreek. Straks kan een digitale versie van mij vragen beantwoorden over HBO-ICT, programmeren, en alles wat met technologie te maken heeft. Best bijzonder als je erover nadenkt. Vijf jaar geleden was dit nog onmogelijk, en nu kan iedereen het gewoon uitproberen op een open dag. Kunstmatige intelligentie verandert de wereld, en jij kunt er deel van uitmaken door HBO-ICT te studeren aan de HvA."
+    - generic:
+      - generic: Opname
+      - generic:
+        - img
+        - generic: "60"
+    - button "Klaar, ga verder"
+  - generic:
+    - generic: Stap 2 van 2
+    - heading "Vertel wie je bent" [level=2]
+    - paragraph: Je kloon moet weten wie jij bent. Vertel het in een paar zinnen.
+    - generic:
+      - generic: Je naam
+      - generic: Wat je studeert
+      - generic: Je hobby's
+      - generic: Een fun fact
+    - generic:
+      - generic: Opname
+      - generic:
+        - img
+        - generic: "20"
+    - button "Klaar, maak mijn kloon"
+  - generic:
+    - generic: Je kloon wordt gemaakt...
+    - generic: Dit duurt ongeveer 10 seconden
+  - generic:
+    - generic: Klaar
+    - heading "Praat met je kloon" [level=2]
+    - paragraph: Je digitale kopie is klaar. Stel een vraag en hoor jezelf antwoorden.
+    - button "Opnieuw beginnen"

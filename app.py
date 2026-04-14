@@ -1,5 +1,6 @@
 import os
 import io
+import sys
 from flask import Flask, request, jsonify, render_template
 import requests
 import speech_recognition as sr
@@ -27,8 +28,14 @@ def index():
 
 @app.route('/api/clone-voice', methods=['POST'])
 def clone_voice():
+    print("=== CLONE VOICE REQUEST ===", flush=True)
+    print("Content-Type:", request.content_type, flush=True)
+    print("Content-Length:", request.content_length, flush=True)
+    print("FILES received:", list(request.files.keys()), flush=True)
+    print("FORM received:", list(request.form.keys()), flush=True)
+    sys.stdout.flush()
     if 'voice_sample' not in request.files or 'role_audio' not in request.files:
-        return jsonify({"error": "Missing voice_sample or role_audio file."}), 400
+        return jsonify({"error": "Missing voice_sample or role_audio file.", "received_files": list(request.files.keys())}), 400
 
     voice_file = request.files['voice_sample']
     role_audio_file = request.files['role_audio']
@@ -41,7 +48,14 @@ def clone_voice():
     files_payload = {"files": ("sample.wav", voice_bytes, "audio/wav")}
     data_payload = {"name": "OpenDag_Kloon", "remove_background_noise": "true"}
 
+    print(f"Voice sample size: {len(voice_bytes.getvalue())} bytes", flush=True)
+    print(f"Role audio size: {len(role_audio_bytes.getvalue())} bytes", flush=True)
+    voice_bytes.seek(0)
+    role_audio_bytes.seek(0)
+
     clone_response = requests.post(VOICE_CLONE_URL, headers=headers, files=files_payload, data=data_payload)
+    print(f"ElevenLabs clone response: {clone_response.status_code}", flush=True)
+    print(f"ElevenLabs clone body: {clone_response.text[:500]}", flush=True)
     if clone_response.status_code != 200:
         return jsonify({"error": "Voice cloning failed", "details": clone_response.text}), 400
 

@@ -178,6 +178,7 @@ async function startStep1() {
       finishStep1();
     });
   } catch (err) {
+    console.error('Microfoon error stap 1:', err);
     document.getElementById('step1-error').textContent = 'Microfoon toegang geweigerd: ' + err.message;
   }
 }
@@ -204,6 +205,7 @@ async function startStep2() {
       finishStep2();
     });
   } catch (err) {
+    console.error('Microfoon error stap 2:', err);
     document.getElementById('step2-error').textContent = 'Microfoon fout: ' + err.message;
   }
 }
@@ -221,6 +223,16 @@ function finishStep2() {
 
 async function createAgent() {
   showScreen('loading');
+
+  console.log('voiceBlob:', voiceBlob, voiceBlob ? voiceBlob.size : 'NULL');
+  console.log('roleBlob:', roleBlob, roleBlob ? roleBlob.size : 'NULL');
+
+  if (!voiceBlob || !roleBlob) {
+    console.error('Audio blobs missing! voiceBlob:', !!voiceBlob, 'roleBlob:', !!roleBlob);
+    showScreen('step1');
+    document.getElementById('step1-error').textContent = 'Opname mislukt — geen audio data. Gebruik Chrome op localhost:5000';
+    return;
+  }
 
   const formData = new FormData();
   formData.append('voice_sample', voiceBlob, 'voice_sample.wav');
